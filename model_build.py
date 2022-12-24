@@ -5,13 +5,18 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import figure
 import pickle
+import time
 
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import BernoulliNB
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import f1_score
+from sklearn.preprocessing import StandardScaler
 
 Potato_healthy_dir, Potato_early_blight_dir, Potato_Late_blight_dir = "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___healthy", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Early_blight", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Late_blight"
 n = 200
@@ -59,7 +64,7 @@ if __name__ == "__main__":
     for i in range(Potato_healthy_np.shape[0]):
         image = Potato_healthy_np[i]
         image_g = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-        orb = cv.ORB_create(nfeatures=1000)
+        orb = cv.ORB_create(nfeatures=1500)
         kp, des = orb.detectAndCompute(image_g, None)
         curr_features = []
         for count, j in enumerate(kp):
@@ -72,7 +77,7 @@ if __name__ == "__main__":
     for i in range(Potato_EB_np.shape[0]):
         image = Potato_EB_np[i]
         image_g = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-        orb = cv.ORB_create(nfeatures=1000)
+        orb = cv.ORB_create(nfeatures=1500)
         kp, des = orb.detectAndCompute(image_g, None)
         curr_features = []
         for count, j in enumerate(kp):
@@ -94,9 +99,9 @@ if __name__ == "__main__":
                 break
         Potato_LB_extracted_features.append(curr_features)
 
-    print(np.array(Potato_healthy_extracted_features).shape)
-    print(np.array(Potato_EB_extracted_features).shape)
-    print(np.array(Potato_LB_extracted_features).shape)
+    # print(np.array(Potato_healthy_extracted_features).shape)
+    # print(np.array(Potato_EB_extracted_features).shape)
+    # print(np.array(Potato_LB_extracted_features).shape)
 
     PF1 = np.array(Potato_healthy_extracted_features)
     PF2 = np.array(Potato_EB_extracted_features)
@@ -106,52 +111,120 @@ if __name__ == "__main__":
 
     X = X.reshape(X.shape[0], X.shape[1] * X.shape[2])
 
+    X = np.concatenate((Potato_healthy_np, Potato_EB, Potato_LB))
+    X = X.reshape(X.shape[0], X.shape[1] * X.shape[2] * X.shape[3])
+    # X = X[:250, :]
+    # y = y[:250]
+    print(X.shape)
+
+    # scaler = StandardScaler().fit(X)
+    # X = scaler.transform(X)
+    # print(X)
+
+
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0, test_size=0.20)
     accuracies = []
+    f1_scores = []
+    times = []
 
     model = DecisionTreeClassifier()
     model.fit(X_train, y_train)
 
+    begin =  time.time()
     y_pred = model.predict(X_test)
+    end = time.time()
 
     print(accuracy_score(y_pred, y_test))
     accuracies.append(accuracy_score(y_pred, y_test))
+    f1_scores.append(f1_score(y_pred, y_test, average="weighted"))
+    times.append(end - begin)
 
 
 
     model = SVC()
     model.fit(X_train, y_train)
 
+    begin = time.time()
     y_pred = model.predict(X_test)
+    end = time.time()
 
     print(accuracy_score(y_pred, y_test))
     accuracies.append(accuracy_score(y_pred, y_test))
+    f1_scores.append(f1_score(y_pred, y_test, average="weighted"))
+    times.append(end - begin)
 
 
 
     model = LogisticRegression(multi_class='multinomial', max_iter=2000)
     model.fit(X_train, y_train)
 
+    begin = time.time()
     y_pred = model.predict(X_test)
+    end = time.time()
 
     print(accuracy_score(y_pred, y_test))
     accuracies.append(accuracy_score(y_pred, y_test))
+    f1_scores.append(f1_score(y_pred, y_test, average="weighted"))
+    times.append(end - begin)
 
-
+    saveModelToFile(model, "model.ml")
 
     model = BernoulliNB()
     model.fit(X_train, y_train)
 
+    begin = time.time()
     y_pred = model.predict(X_test)
+    end = time.time()
 
     print(accuracy_score(y_pred, y_test))
     accuracies.append(accuracy_score(y_pred, y_test))
+    f1_scores.append(f1_score(y_pred, y_test, average="weighted"))
+    times.append(end - begin)
+
+    model = RandomForestClassifier()
+    model.fit(X_train, y_train)
+
+    begin = time.time()
+    y_pred = model.predict(X_test)
+    end = time.time()
+
+    print(accuracy_score(y_pred, y_test))
+    accuracies.append(accuracy_score(y_pred, y_test))
+    f1_scores.append(f1_score(y_pred, y_test, average="weighted"))
+    times.append(end - begin)
 
 
-    x = ["DecisionTree", "SVM", "Logistic Regression", "BernoulliNB"]
 
-    plt.bar(x, accuracies)
+
+    x = ["DecisionTree", "SVM", "Logistic Regression", "BernoulliNB", "Random Forest"]
+
+    x_axis = np.arange(len(x))
+    width = 0.35
+
+    fig, ax = plt.subplots()
+    rects1 = ax.bar(x_axis - width / 2, accuracies, width, label='Accuracy')
+    rects2 = ax.bar(x_axis + width / 2, f1_scores, width, label='f1_score')
+    ax.bar_label(rects1, padding=3)
+    ax.bar_label(rects2, padding=3)
+
+    ax.set_ylabel('Metric Values')
+    ax.set_title('Machine Learning Model Evaluation Metrics')
+    ax.set_xticks(x_axis, x)
+    ax.legend()
+
+    fig.tight_layout()
+
     plt.show()
+
+    plt.bar(x, times)
+    plt.ylabel("prediction time")
+    plt.show()
+
+    # plt.bar(x, accuracies)
+    # plt.show()
+    #
+    # plt.bar(x, f1_scores)
+    # plt.show()
 
 
 
