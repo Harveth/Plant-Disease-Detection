@@ -20,6 +20,7 @@ if __name__ == "__main__":
     print(fv.shape)
     pred = model.predict(fv)
     print(classes[pred[0]])
+    plant_image = cv.putText(plant_image, classes[pred[0]], (10, 250), cv.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 2, cv.LINE_AA)
     cv.imshow("image", plant_image)
     cv.waitKey(0)
 

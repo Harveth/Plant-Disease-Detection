@@ -17,6 +17,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import GridSearchCV
 
 Potato_healthy_dir, Potato_early_blight_dir, Potato_Late_blight_dir = "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___healthy", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Early_blight", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Late_blight"
 n = 200
@@ -99,10 +100,6 @@ if __name__ == "__main__":
                 break
         Potato_LB_extracted_features.append(curr_features)
 
-    # print(np.array(Potato_healthy_extracted_features).shape)
-    # print(np.array(Potato_EB_extracted_features).shape)
-    # print(np.array(Potato_LB_extracted_features).shape)
-
     PF1 = np.array(Potato_healthy_extracted_features)
     PF2 = np.array(Potato_EB_extracted_features)
     PF3 = np.array(Potato_LB_extracted_features)
@@ -117,8 +114,8 @@ if __name__ == "__main__":
     # y = y[:250]
     print(X.shape)
 
-    # scaler = StandardScaler().fit(X)
-    # X = scaler.transform(X)
+    scaler = StandardScaler().fit(X)
+    X = scaler.transform(X)
     # print(X)
 
 
@@ -139,14 +136,25 @@ if __name__ == "__main__":
     f1_scores.append(f1_score(y_pred, y_test, average="weighted"))
     times.append(end - begin)
 
-
-
+    # param_grid = {'C': [0.1, 1, 10, 100, 1000],
+    #               'gamma': [1, 0.1, 0.01, 0.001, 0.0001],
+    #               'kernel': ['rbf']}
     model = SVC()
     model.fit(X_train, y_train)
+    # grid = GridSearchCV(SVC(), param_grid, refit=True, verbose=3)
+    # grid.fit(X_train, y_train)
 
     begin = time.time()
     y_pred = model.predict(X_test)
     end = time.time()
+
+    # print best parameter after tuning
+    # print(grid.best_params_)
+
+    # print how our model looks after hyper-parameter tuning
+    # print(grid.best_estimator_)
+
+    """ Results : {'C': 0.1, 'gamma': 1, 'kernel': 'rbf'}    SVC(C=0.1, gamma=1)"""
 
     print(accuracy_score(y_pred, y_test))
     accuracies.append(accuracy_score(y_pred, y_test))
@@ -157,17 +165,24 @@ if __name__ == "__main__":
 
     model = LogisticRegression(multi_class='multinomial', max_iter=2000)
     model.fit(X_train, y_train)
+    # grid = {"C": np.logspace(-3, 3, 7), "penalty": ["l1", "l2"]}
+    # model = LogisticRegression(max_iter=10000)
+    # model_cv = GridSearchCV(model, grid, cv=10)
+    # model_cv.fit(X_train, y_train)
 
     begin = time.time()
     y_pred = model.predict(X_test)
     end = time.time()
+
+    # print("tuned hpyerparameters :(best parameters) ", model_cv.best_params_)
+    # print("accuracy :",  model_cv.best_score_)
 
     print(accuracy_score(y_pred, y_test))
     accuracies.append(accuracy_score(y_pred, y_test))
     f1_scores.append(f1_score(y_pred, y_test, average="weighted"))
     times.append(end - begin)
 
-    saveModelToFile(model, "model.ml")
+    # saveModelToFile(model, "model.ml")
 
     model = BernoulliNB()
     model.fit(X_train, y_train)
