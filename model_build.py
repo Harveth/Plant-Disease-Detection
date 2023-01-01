@@ -19,11 +19,12 @@ from sklearn.metrics import f1_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 
-Potato_healthy_dir, Potato_early_blight_dir, Potato_Late_blight_dir = "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___healthy", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Early_blight", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Late_blight"
-Potato_healthy_dir2, Potato_early_blight_dir2, Potato_Late_blight_dir2 = "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Healthy", "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Early_Blight", "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Late_Blight"
-Potato_healthy_dir3, Potato_early_blight_dir3, Potato_Late_blight_dir3 = "", "", ""
-#Potato_healthy_dir, Potato_early_blight_dir, Potato_Late_blight_dir = "PlantVillage/Potato___healthy", "PlantVillage/Potato___Early_blight", "PlantVillage/Potato___Late_blight"
-#Potato_healthy_dir2, Potato_early_blight_dir2, Potato_Late_blight_dir2 = "PLD_3_Classes_256/Training/Healthy", "PLD_3_Classes_256/Training/Early_Blight", "PLD_3_Classes_256/Training/Late_Blight"
+# Potato_healthy_dir, Potato_early_blight_dir, Potato_Late_blight_dir = "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___healthy", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Early_blight", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Late_blight"
+# Potato_healthy_dir2, Potato_early_blight_dir2, Potato_Late_blight_dir2 = "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Healthy", "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Early_Blight", "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Late_Blight"
+# Potato_healthy_dir3, Potato_early_blight_dir3, Potato_Late_blight_dir3 = "", "", ""
+Potato_healthy_dir, Potato_early_blight_dir, Potato_Late_blight_dir = "PlantVillage/Potato___healthy", "PlantVillage/Potato___Early_blight", "PlantVillage/Potato___Late_blight"
+Potato_healthy_dir2, Potato_early_blight_dir2, Potato_Late_blight_dir2 = "PLD_3_Classes_256/Training/Healthy", "PLD_3_Classes_256/Training/Early_Blight", "PLD_3_Classes_256/Training/Late_Blight"
+Potato_healthy_dir3, Potato_early_blight_dir3, Potato_Late_blight_dir3 = "plant_3/train/Potato___Healthy", "plant_3/train/Potato___Early_Blight", "plant_3/train/Potato___Late_Blight"
 n = 200
 
 
