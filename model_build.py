@@ -20,11 +20,19 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 
 Potato_healthy_dir, Potato_early_blight_dir, Potato_Late_blight_dir = "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___healthy", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Early_blight", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Late_blight"
+Potato_healthy_dir2, Potato_early_blight_dir2, Potato_Late_blight_dir2 = "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Healthy", "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Early_Blight", "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Late_Blight"
 n = 200
 
 
 def saveModelToFile(model, filename):
     pickle.dump(model, open(filename, 'wb'))
+
+
+class result:
+    def __init__(self, acc, f1, time):
+        self.accuracies = acc
+        self.f1 = f1
+        self.time = time
 
 
 if __name__ == "__main__":
@@ -56,60 +64,88 @@ if __name__ == "__main__":
         if counter == n:
             break
 
+    # counter = 0
+    # for image in os.listdir(Potato_healthy_dir2):
+    #     current = cv.imread(Potato_healthy_dir2 + "/" + image)
+    #     Potato_healthy.append(current)
+    #     Potato_labels_1.append(0)
+    #     counter += 1
+    #     if counter == n:
+    #         break
+    #
+    # counter = 0
+    # for image in os.listdir(Potato_early_blight_dir2):
+    #     current = cv.imread(Potato_early_blight_dir2 + "/" + image)
+    #     Potato_EB.append(current)
+    #     Potato_labels_2.append(1)
+    #     counter += 1
+    #     if counter == n:
+    #         break
+    #
+    # counter = 0
+    # for image in os.listdir(Potato_Late_blight_dir2):
+    #     current = cv.imread(Potato_Late_blight_dir2 + "/" + image)
+    #     Potato_LB.append(current)
+    #     Potato_labels_3.append(2)
+    #     counter += 1
+    #     if counter == n:
+    #         break
+
     Potato_healthy_np = np.array(Potato_healthy)
     Potato_EB_np = np.array(Potato_EB)
     Potato_LB_np = np.array(Potato_LB)
     # print(Potato_LB_np.shape)
 
-    Potato_healthy_extracted_features = []
-    for i in range(Potato_healthy_np.shape[0]):
-        image = Potato_healthy_np[i]
-        image_g = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-        orb = cv.ORB_create(nfeatures=1500)
-        kp, des = orb.detectAndCompute(image_g, None)
-        curr_features = []
-        for count, j in enumerate(kp):
-            curr_features.append(j.pt)
-            if count == 500:
-                break
-        Potato_healthy_extracted_features.append(curr_features)
-
-    Potato_EB_extracted_features = []
-    for i in range(Potato_EB_np.shape[0]):
-        image = Potato_EB_np[i]
-        image_g = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-        orb = cv.ORB_create(nfeatures=1500)
-        kp, des = orb.detectAndCompute(image_g, None)
-        curr_features = []
-        for count, j in enumerate(kp):
-            curr_features.append(j.pt)
-            if count == 500:
-                break
-        Potato_EB_extracted_features.append(curr_features)
-
-    Potato_LB_extracted_features = []
-    for i in range(Potato_LB_np.shape[0]):
-        image = Potato_LB_np[i]
-        image_g = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-        orb = cv.ORB_create(nfeatures=1500)
-        kp, des = orb.detectAndCompute(image_g, None)
-        curr_features = []
-        for count, j in enumerate(kp):
-            curr_features.append(j.pt)
-            if count == 500:
-                break
-        Potato_LB_extracted_features.append(curr_features)
-
-    PF1 = np.array(Potato_healthy_extracted_features)
-    PF2 = np.array(Potato_EB_extracted_features)
-    PF3 = np.array(Potato_LB_extracted_features)
-
-    X, y = np.concatenate((PF1, PF2, PF3)), np.array(Potato_labels_1 + Potato_labels_2 + Potato_labels_3)
-
-    X = X.reshape(X.shape[0], X.shape[1] * X.shape[2])
+    # Potato_healthy_extracted_features = []
+    # for i in range(Potato_healthy_np.shape[0]):
+    #     image = Potato_healthy_np[i]
+    #     image_g = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    #     orb = cv.ORB_create(nfeatures=1500)
+    #     kp, des = orb.detectAndCompute(image_g, None)
+    #     curr_features = []
+    #     for count, j in enumerate(kp):
+    #         curr_features.append(j.pt)
+    #         if count == 500:
+    #             break
+    #     Potato_healthy_extracted_features.append(curr_features)
+    #
+    # Potato_EB_extracted_features = []
+    # for i in range(Potato_EB_np.shape[0]):
+    #     image = Potato_EB_np[i]
+    #     image_g = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    #     orb = cv.ORB_create(nfeatures=1500)
+    #     kp, des = orb.detectAndCompute(image_g, None)
+    #     curr_features = []
+    #     for count, j in enumerate(kp):
+    #         curr_features.append(j.pt)
+    #         if count == 500:
+    #             break
+    #     Potato_EB_extracted_features.append(curr_features)
+    #
+    # Potato_LB_extracted_features = []
+    # for i in range(Potato_LB_np.shape[0]):
+    #     image = Potato_LB_np[i]
+    #     image_g = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    #     orb = cv.ORB_create(nfeatures=1500)
+    #     kp, des = orb.detectAndCompute(image_g, None)
+    #     curr_features = []
+    #     for count, j in enumerate(kp):
+    #         curr_features.append(j.pt)
+    #         if count == 500:
+    #             break
+    #     Potato_LB_extracted_features.append(curr_features)
+    #
+    # PF1 = np.array(Potato_healthy_extracted_features)
+    # PF2 = np.array(Potato_EB_extracted_features)
+    # PF3 = np.array(Potato_LB_extracted_features)
+    #
+    # X, y = np.concatenate((PF1, PF2, PF3)), np.array(Potato_labels_1 + Potato_labels_2 + Potato_labels_3)
+    #
+    # X = X.reshape(X.shape[0], X.shape[1] * X.shape[2])
 
     X = np.concatenate((Potato_healthy_np, Potato_EB, Potato_LB))
     X = X.reshape(X.shape[0], X.shape[1] * X.shape[2] * X.shape[3])
+    y = np.array(Potato_labels_1 + Potato_labels_2 + Potato_labels_3)
     # X = X[:250, :]
     # y = y[:250]
     print(X.shape)
@@ -117,7 +153,6 @@ if __name__ == "__main__":
     scaler = StandardScaler().fit(X)
     X = scaler.transform(X)
     # print(X)
-
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0, test_size=0.20)
     accuracies = []
@@ -127,7 +162,7 @@ if __name__ == "__main__":
     model = DecisionTreeClassifier()
     model.fit(X_train, y_train)
 
-    begin =  time.time()
+    begin = time.time()
     y_pred = model.predict(X_test)
     end = time.time()
 
@@ -160,8 +195,6 @@ if __name__ == "__main__":
     accuracies.append(accuracy_score(y_pred, y_test))
     f1_scores.append(f1_score(y_pred, y_test, average="weighted"))
     times.append(end - begin)
-
-
 
     model = LogisticRegression(multi_class='multinomial', max_iter=2000)
     model.fit(X_train, y_train)
@@ -208,8 +241,13 @@ if __name__ == "__main__":
     f1_scores.append(f1_score(y_pred, y_test, average="weighted"))
     times.append(end - begin)
 
-
-
+    res = {
+        "accuracies": accuracies,
+        "f1_scores": f1_scores,
+        "times": times
+    }
+    # saveModelToFile(res, "results.rsl")
+    # print(res)
 
     x = ["DecisionTree", "SVM", "Logistic Regression", "BernoulliNB", "Random Forest"]
 
@@ -240,9 +278,6 @@ if __name__ == "__main__":
     #
     # plt.bar(x, f1_scores)
     # plt.show()
-
-
-
 
     # print(len(Potato_labels_1) * len(Potato_labels_2) * len(Potato_labels_3) * 256 * 256 * 3)
     # print(Potato_healthy_np[0].reshape(Potato_healthy_np.shape[1] * Potato_healthy_np.shape[2] * Potato_healthy_np.shape[3]).shape)
