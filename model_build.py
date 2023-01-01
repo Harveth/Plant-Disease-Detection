@@ -21,6 +21,7 @@ from sklearn.model_selection import GridSearchCV
 
 Potato_healthy_dir, Potato_early_blight_dir, Potato_Late_blight_dir = "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___healthy", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Early_blight", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Late_blight"
 Potato_healthy_dir2, Potato_early_blight_dir2, Potato_Late_blight_dir2 = "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Healthy", "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Early_Blight", "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Late_Blight"
+Potato_healthy_dir3, Potato_early_blight_dir3, Potato_Late_blight_dir3 = "", "", ""
 #Potato_healthy_dir, Potato_early_blight_dir, Potato_Late_blight_dir = "PlantVillage/Potato___healthy", "PlantVillage/Potato___Early_blight", "PlantVillage/Potato___Late_blight"
 #Potato_healthy_dir2, Potato_early_blight_dir2, Potato_Late_blight_dir2 = "PLD_3_Classes_256/Training/Healthy", "PLD_3_Classes_256/Training/Early_Blight", "PLD_3_Classes_256/Training/Late_Blight"
 n = 200
@@ -87,6 +88,35 @@ if __name__ == "__main__":
     # counter = 0
     # for image in os.listdir(Potato_Late_blight_dir2):
     #     current = cv.imread(Potato_Late_blight_dir2 + "/" + image)
+    #     Potato_LB.append(current)
+    #     Potato_labels_3.append(2)
+    #     counter += 1
+    #     if counter == n:
+    #         break
+
+
+
+    # counter = 0
+    # for image in os.listdir(Potato_healthy_dir3):
+    #     current = cv.imread(Potato_healthy_dir3 + "/" + image)
+    #     Potato_healthy.append(current)
+    #     Potato_labels_1.append(0)
+    #     counter += 1
+    #     if counter == n:
+    #         break
+    #
+    # counter = 0
+    # for image in os.listdir(Potato_early_blight_dir3):
+    #     current = cv.imread(Potato_early_blight_dir3 + "/" + image)
+    #     Potato_EB.append(current)
+    #     Potato_labels_2.append(1)
+    #     counter += 1
+    #     if counter == n:
+    #         break
+    #
+    # counter = 0
+    # for image in os.listdir(Potato_Late_blight_dir3):
+    #     current = cv.imread(Potato_Late_blight_dir3 + "/" + image)
     #     Potato_LB.append(current)
     #     Potato_labels_3.append(2)
     #     counter += 1
