@@ -11,6 +11,8 @@ from PyQt5 import uic
 from stylsheets import *
 
 img_path = "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Late_blight\/feefc118-4434-4ffb-afbb-02fb292f72b6___RS_LB 2874.JPG"
+#img_path = "PlantVillage/Potato___Late_blight/feefc118-4434-4ffb-afbb-02fb292f72b6___RS_LB 2874.JPG"
+
 classes = {0: "Healthy", 1: "Early Blight", 2: "Late Blight"}
 
 
