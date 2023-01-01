@@ -16,14 +16,18 @@ from sklearn.ensemble import AdaBoostClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import precision_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import GridSearchCV
 
-Potato_healthy_dir, Potato_early_blight_dir, Potato_Late_blight_dir = "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___healthy", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Early_blight", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Late_blight"
-Potato_healthy_dir2, Potato_early_blight_dir2, Potato_Late_blight_dir2 = "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Healthy", "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Early_Blight", "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Late_Blight"
-Potato_healthy_dir3, Potato_early_blight_dir3, Potato_Late_blight_dir3 = "", "", ""
-#Potato_healthy_dir, Potato_early_blight_dir, Potato_Late_blight_dir = "PlantVillage/Potato___healthy", "PlantVillage/Potato___Early_blight", "PlantVillage/Potato___Late_blight"
-#Potato_healthy_dir2, Potato_early_blight_dir2, Potato_Late_blight_dir2 = "PLD_3_Classes_256/Training/Healthy", "PLD_3_Classes_256/Training/Early_Blight", "PLD_3_Classes_256/Training/Late_Blight"
+# Potato_healthy_dir, Potato_early_blight_dir, Potato_Late_blight_dir = "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___healthy", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Early_blight", "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Late_blight"
+# Potato_healthy_dir2, Potato_early_blight_dir2, Potato_Late_blight_dir2 = "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Healthy", "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Early_Blight", "D:\Downloads (chrome)\plant disease datasets\plantTwo\PLD_3_Classes_256\Training\Late_Blight"
+# Potato_healthy_dir3, Potato_early_blight_dir3, Potato_Late_blight_dir3 = "", "", ""
+Potato_healthy_dir, Potato_early_blight_dir, Potato_Late_blight_dir = "PlantVillage/Potato___healthy", "PlantVillage/Potato___Early_blight", "PlantVillage/Potato___Late_blight"
+Potato_healthy_dir2, Potato_early_blight_dir2, Potato_Late_blight_dir2 = "PLD_3_Classes_256/Training/Healthy", "PLD_3_Classes_256/Training/Early_Blight", "PLD_3_Classes_256/Training/Late_Blight"
+Potato_healthy_dir3, Potato_early_blight_dir3, Potato_Late_blight_dir3 = "plant_3/train/Potato___Healthy", "plant_3/train/Potato___Early_Blight", "plant_3/train/Potato___Late_Blight"
+
 n = 200
 
 
@@ -188,19 +192,24 @@ if __name__ == "__main__":
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0, test_size=0.20)
     accuracies = []
+    precision = []
+    recall = []
     f1_scores = []
     times = []
+
 
     model = DecisionTreeClassifier()
     model.fit(X_train, y_train)
 
     begin = time.time()
-    y_pred = model.predict(X_test)
+    y_pred = model.predict(X_train)
     end = time.time()
 
-    print(accuracy_score(y_pred, y_test))
-    accuracies.append(accuracy_score(y_pred, y_test))
-    f1_scores.append(f1_score(y_pred, y_test, average="weighted"))
+    print(accuracy_score(y_pred, y_train))
+    accuracies.append(accuracy_score(y_pred, y_train))
+    precision.append(precision_score(y_pred, y_train,average="weighted"))
+    recall.append(recall_score(y_pred, y_train,average="weighted"))
+    f1_scores.append(f1_score(y_pred, y_train, average="weighted"))
     times.append(end - begin)
 
     # param_grid = {'C': [0.1, 1, 10, 100, 1000],
@@ -212,7 +221,7 @@ if __name__ == "__main__":
     # grid.fit(X_train, y_train)
 
     begin = time.time()
-    y_pred = model.predict(X_test)
+    y_pred = model.predict(X_train)
     end = time.time()
 
     # print best parameter after tuning
@@ -223,9 +232,11 @@ if __name__ == "__main__":
 
     """ Results : {'C': 0.1, 'gamma': 1, 'kernel': 'rbf'}    SVC(C=0.1, gamma=1)"""
 
-    print(accuracy_score(y_pred, y_test))
-    accuracies.append(accuracy_score(y_pred, y_test))
-    f1_scores.append(f1_score(y_pred, y_test, average="weighted"))
+    print(accuracy_score(y_pred, y_train))
+    accuracies.append(accuracy_score(y_pred, y_train))
+    precision.append(precision_score(y_pred, y_train,average="weighted"))
+    recall.append(recall_score(y_pred, y_train,average="weighted"))
+    f1_scores.append(f1_score(y_pred, y_train, average="weighted"))
     times.append(end - begin)
 
     model = LogisticRegression(multi_class='multinomial', max_iter=2000)
@@ -236,15 +247,17 @@ if __name__ == "__main__":
     # model_cv.fit(X_train, y_train)
 
     begin = time.time()
-    y_pred = model.predict(X_test)
+    y_pred = model.predict(X_train)
     end = time.time()
 
     # print("tuned hpyerparameters :(best parameters) ", model_cv.best_params_)
     # print("accuracy :",  model_cv.best_score_)
 
-    print(accuracy_score(y_pred, y_test))
-    accuracies.append(accuracy_score(y_pred, y_test))
-    f1_scores.append(f1_score(y_pred, y_test, average="weighted"))
+    print(accuracy_score(y_pred, y_train))
+    accuracies.append(accuracy_score(y_pred, y_train))
+    precision.append(precision_score(y_pred, y_train,average="weighted"))
+    recall.append(recall_score(y_pred, y_train,average="weighted"))
+    f1_scores.append(f1_score(y_pred, y_train, average="weighted"))
     times.append(end - begin)
 
     # saveModelToFile(model, "model.ml")
@@ -253,33 +266,39 @@ if __name__ == "__main__":
     model.fit(X_train, y_train)
 
     begin = time.time()
-    y_pred = model.predict(X_test)
+    y_pred = model.predict(X_train)
     end = time.time()
 
-    print(accuracy_score(y_pred, y_test))
-    accuracies.append(accuracy_score(y_pred, y_test))
-    f1_scores.append(f1_score(y_pred, y_test, average="weighted"))
+    print(accuracy_score(y_pred, y_train))
+    accuracies.append(accuracy_score(y_pred, y_train))
+    precision.append(precision_score(y_pred, y_train,average="weighted"))
+    recall.append(recall_score(y_pred, y_train,average="weighted"))
+    f1_scores.append(f1_score(y_pred, y_train, average="weighted"))
     times.append(end - begin)
 
     model = RandomForestClassifier()
     model.fit(X_train, y_train)
 
     begin = time.time()
-    y_pred = model.predict(X_test)
+    y_pred = model.predict(X_train)
     end = time.time()
 
-    print(accuracy_score(y_pred, y_test))
-    accuracies.append(accuracy_score(y_pred, y_test))
-    f1_scores.append(f1_score(y_pred, y_test, average="weighted"))
+    print(accuracy_score(y_pred, y_train))
+    accuracies.append(accuracy_score(y_pred, y_train))
+    precision.append(precision_score(y_pred, y_train,average="weighted"))
+    recall.append(recall_score(y_pred, y_train,average="weighted"))
+    f1_scores.append(f1_score(y_pred, y_train, average="weighted"))
     times.append(end - begin)
 
     res = {
         "accuracies": accuracies,
+        "precision": precision,
+        "recall": recall,
         "f1_scores": f1_scores,
         "times": times
     }
     # saveModelToFile(res, "results.rsl")
-    # print(res)
+    print(res)
 
     x = ["DecisionTree", "SVM", "Logistic Regression", "BernoulliNB", "Random Forest"]
 

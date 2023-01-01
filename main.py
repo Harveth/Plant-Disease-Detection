@@ -10,8 +10,8 @@ from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from stylsheets import *
 
-img_path = "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Late_blight\/feefc118-4434-4ffb-afbb-02fb292f72b6___RS_LB 2874.JPG"
-#img_path = "PlantVillage/Potato___Late_blight/feefc118-4434-4ffb-afbb-02fb292f72b6___RS_LB 2874.JPG"
+#img_path = "D:\Downloads (chrome)\plant disease datasets\PlantVillage\Potato___Late_blight\/feefc118-4434-4ffb-afbb-02fb292f72b6___RS_LB 2874.JPG"
+img_path = "PlantVillage/Potato___Late_blight/feefc118-4434-4ffb-afbb-02fb292f72b6___RS_LB 2874.JPG"
 
 classes = {0: "Healthy", 1: "Early Blight", 2: "Late Blight"}
 
@@ -34,7 +34,7 @@ class MainWindow(QMainWindow):
         uic.loadUi('ui_files/gui.ui', self)
         self.image_path = ""
         self.model = load_model()
-        self.setFixedSize(1000, 460)
+        self.setFixedSize(1000, 450)
         self.setWindowTitle("Plant Disease Detection")
         self.pushButton.clicked.connect(self.SelectImage)
         self.pushButton_2.clicked.connect(self.classifyImage)
@@ -55,7 +55,7 @@ class MainWindow(QMainWindow):
 
     def showGraphs(self):
         res = load_results()
-        accuracies, f1_scores = res["accuracies"], res["f1_scores"]
+        accuracies,precision,recall, f1_scores = res["accuracies"], res["precision"],res["recall"],res["f1_scores"]
         print(res)
         x = ["DecisionTree", "SVM", "Logistic Regression", "BernoulliNB", "Random Forest"]
         x_axis = np.arange(len(x))
