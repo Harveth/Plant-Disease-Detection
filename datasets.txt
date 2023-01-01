@@ -1,0 +1,3 @@
+https://www.kaggle.com/datasets/emmarex/plantdisease
+https://www.kaggle.com/datasets/rizwan123456789/potato-disease-leaf-datasetpld
+https://www.kaggle.com/datasets/buffyhridoy/potato-disease
